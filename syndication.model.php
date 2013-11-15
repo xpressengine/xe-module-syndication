@@ -26,6 +26,8 @@
                     $this->granted_modules[] = $val->module_srl;
                 }
             }
+
+			$this->gzhandler_enable = FALSE;
         }
 
         function isExceptedModules($module_srl) {
