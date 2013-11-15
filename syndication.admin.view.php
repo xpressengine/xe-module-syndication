@@ -1,7 +1,9 @@
 <?php
+/* Copyright (C) NAVER <http://www.navercorp.com> */
+
 /**
  * @class  syndicationAdminView
- * @author NHN (developers@xpressengine.com)
+ * @author NAVER (developers@xpressengine.com)
  * @brief  syndication admin view class
  **/
 
@@ -10,7 +12,7 @@ class syndicationAdminView extends syndication {
 	function init() {
 	}
 
-	public function dispSyndicationAdminConfig() 
+	public function dispSyndicationAdminConfig()
 	{
 		$oModuleModel = &getModel('module');
 
@@ -20,7 +22,7 @@ class syndicationAdminView extends syndication {
 			$module_config->target_services = array();
 		}
 
-		foreach($this->services as $key => $val) 
+		foreach($this->services as $key => $val)
 		{
 			unset($obj);
 			$obj->service = $key;
@@ -30,13 +32,13 @@ class syndicationAdminView extends syndication {
 		}
 		Context::set('services', $services);
 
-		if(!$module_config->site_url) 
+		if(!$module_config->site_url)
 		{
 			$module_config->site_url = Context::getDefaultUrl()?Context::getDefaultUrl():getFullUrl();
 		}
 		Context::set('site_url', preg_replace('/^(http|https):\/\//i','',$module_config->site_url));
 
-		if(!$module_config->year) 
+		if(!$module_config->year)
 		{
 			$module_config->year = date("Y");
 		}
@@ -46,7 +48,7 @@ class syndicationAdminView extends syndication {
 		$except_module_list = array();
 		if($output->data && count($output->data) > 0)
 		{
-			foreach($output->data as $item) 
+			foreach($output->data as $item)
 			{
 				$except_module_list[] = $item;
 			}
@@ -54,7 +56,7 @@ class syndicationAdminView extends syndication {
 		Context::set('except_module', $except_module_list);
 
 		//Security
-		$security = new Security();			
+		$security = new Security();
 		$security->encodeHTML('services..service','except_module..ping');
 		$security->encodeHTML('except_module..mid','except_module..browser_title');
 
@@ -63,4 +65,3 @@ class syndicationAdminView extends syndication {
 	}
 
 }
-?>
