@@ -6,9 +6,8 @@
  * @author NAVER (developers@xpressengine.com)
  * @brief  syndication admin view class
  **/
-
-class syndicationAdminView extends syndication {
-
+class syndicationAdminView extends syndication
+{
 	function init() {
 	}
 
@@ -25,6 +24,7 @@ class syndicationAdminView extends syndication {
 		foreach($this->services as $key => $val)
 		{
 			unset($obj);
+			$obj = new stdClass;
 			$obj->service = $key;
 			$obj->ping = $val;
 			$obj->selected = in_array($key, $module_config->target_services)?true:false;

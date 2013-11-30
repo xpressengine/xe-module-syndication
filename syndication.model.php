@@ -7,8 +7,8 @@
  * @brief syndication model class of the module
  **/
 
-class syndicationModel extends syndication {
-
+class syndicationModel extends syndication
+{
 	var $site_url = null;
 	var $target_services = array();
 	var $year = null;
@@ -33,13 +33,16 @@ class syndicationModel extends syndication {
 	}
 
 	function isExceptedModules($module_srl) {
+		$args = new stdClass;
 		$args->module_srl = $module_srl;
-		$output = executeQuery('syndication.getExceptModule', $args);
-		if($output->data->count) return true;
-		$output = executeQuery('syndication.getGrantedModule', $args);
-		if($output->data->count) return true;
-		return false;
 
+		$output = executeQuery('syndication.getExceptModule', $args);
+		if($output->data->count) return TRUE;
+
+		$output = executeQuery('syndication.getGrantedModule', $args);
+		if($output->data->count) return TRUE;
+
+		return FALSE;
 	}
 
 	function getLang($key, $site_srl)
@@ -47,10 +50,12 @@ class syndicationModel extends syndication {
 		if(!$this->langs[$site_srl])
 		{
 			$this->langs[$site_srl] = array();
+			$args = new stdClass;
 			$args->site_srl = $site_srl;
 			$args->lang_code = Context::getLangType();
 			$output = executeQueryArray("syndication.getLang", $args);
 			if(!$output->toBool() || !$output->data) return $key;
+
 			foreach($output->data as $value)
 			{
 				$this->langs[$site_srl][$value->name] = $value->value;
@@ -65,8 +70,11 @@ class syndicationModel extends syndication {
 
 	function handleLang($title, $site_srl)
 	{
-		$matches = null;
-		if(!preg_match("/\\\$user_lang->(.+)/",$title, $matches)) return $title;
+		$matches = NULL;
+		if(!preg_match("/\\\$user_lang->(.+)/", $title, $matches))
+		{
+			return $title;
+		}
 		else
 		{
 			return $this->getLang($matches[1], $site_srl);
@@ -104,7 +112,9 @@ class syndicationModel extends syndication {
 		$site_module_info = Context::get('site_module_info');
 
 		if($target == 'channel' && !$module_srl) $target = 'site';
-		if($target == 'channel' && $module_srl) {
+		if($target == 'channel' && $module_srl)
+		{
+			$args = new stdClass;
 			$args->module_srls = $module_srl;
 			$output = executeQuery('syndication.getModules', $args);
 			$module_info = $output->data;
@@ -122,6 +132,7 @@ class syndicationModel extends syndication {
 			Context::set('type', $type);
 			switch($target) {
 				case 'site' :
+						$site_info = new stdClass;
 						$site_info->id = $this->getID('site');
 						$site_info->title = $this->handleLang($site_module_info->browser_title, $site_module_info->site_srl);
 
@@ -158,6 +169,7 @@ class syndicationModel extends syndication {
 						}
 					break;
 				case 'channel' :
+						$channel_info = new stdClass;
 						$channel_info->id = $this->getID('channel', $module_info->module_srl);
 						$channel_info->title = $this->handleLang($module_info->browser_title, $module_info->site_srl);
 						$channel_info->updated = date("Y-m-d\\TH:i:s").$time_zone;
@@ -222,6 +234,7 @@ class syndicationModel extends syndication {
 		if($output->data) {
 			foreach($output->data as $module_info) {
 				unset($obj);
+				$obj = new stdClass;
 				$obj->id = $this->getID('channel', $module_info->module_srl);
 				$obj->title = $this->handleLang($module_info->browser_title, $module_info->site_srl);
 				$obj->updated = date("Y-m-d\\TH:i:s").$time_zone;
@@ -266,6 +279,7 @@ class syndicationModel extends syndication {
 	function getArticles($module_srl = null, $page=1, $startTime = null, $endTime = null, $type = null, $id = null) {
 		if($this->site_url==null) $this->init();
 
+		$args = new stdClass;
 		if($module_srl) $args->module_srl = $module_srl;
 		if($startTime) $args->start_date = $this->getDate($startTime);
 		if($endTime) $args->end_date = $this->getDate($endTime);
@@ -275,6 +289,7 @@ class syndicationModel extends syndication {
 		$cur_page = $output->page_navigation->cur_page;
 		$total_page = $output->page_navigation->last_page;
 
+		$result = new stdClass;
 		$result->next_url = null;
 		$result->list = array();
 
@@ -303,6 +318,7 @@ class syndicationModel extends syndication {
 	function getDeleted($module_srl = null, $page = 1, $startTime = null, $endTime = null, $type = null, $id = null) {
 		if($this->site_url==null) $this->init();
 
+		$args = new stdClass;
 		if($module_srl) $args->module_srl= $module_srl;
 		if($startTime) $args->start_date = $this->getDate($startTime);
 		if($endTime) $args->end_date = $this->getDate($endTime);
@@ -313,6 +329,7 @@ class syndicationModel extends syndication {
 		$cur_page = $output->page_navigation->cur_page;
 		$total_page = $output->page_navigation->last_page;
 
+		$result = new stdClass;
 		$result->next_url = null;
 		$result->list = array();
 
@@ -345,6 +362,7 @@ class syndicationModel extends syndication {
 	function getChannelAlternativeHref($module_srl) {
 		static $module_info = array();
 		if(!isset($module_info[$module_srl])) {
+			$args = new stdClass;
 			$args->module_srl = $module_srl;
 			$output = executeQuery('syndication.getModuleSiteInfo', $args);
 			if($output->data) $module_info[$module_srl] = $output->data;

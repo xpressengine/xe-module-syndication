@@ -7,8 +7,8 @@
  * @brief syndication module's Controller class
  **/
 
-class syndicationController extends syndication {
-
+class syndicationController extends syndication
+{
 	function triggerInsertDocument(&$obj) {
 		if($obj->module_srl < 1) return new Object();
 
@@ -104,7 +104,9 @@ class syndicationController extends syndication {
 		return new Object();
 	}
 
-	function insertLog($module_srl, $document_srl, $title = null, $summary = null) {
+	function insertLog($module_srl, $document_srl, $title = null, $summary = null)
+	{
+		$args = new stdClass;
 		$args->module_srl = $module_srl;
 		$args->document_srl = $document_srl;
 		$args->title = $title;
@@ -118,9 +120,12 @@ class syndicationController extends syndication {
 
 		if(!count($config->target_services)) return;
 		if(substr($config->site_url,-1)!='/') $config->site_url .= '/';
-		foreach($config->target_services as $key => $val) {
+
+		foreach($config->target_services as $key => $val)
+		{
 			$ping_url = trim($this->services[$val]);
 			if(!$ping_url) continue;
+
 			$ping_body = sprintf('http://%s?module=syndication&act=getSyndicationList&id=%s&type=%s', $config->site_url, $id, $type);
 			FileHandler::getRemoteResource($ping_url, null, 3, 'POST', 'application/x-www-form-urlencoded', array(), array(), array('link'=>$ping_body));
 		}
