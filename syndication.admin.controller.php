@@ -17,6 +17,7 @@ class syndicationAdminController extends syndication {
 		$oSyndicationController = &getController('syndication');
 		$oSyndicationModel = &getModel('syndication');
 
+		$config = new stdClass;
 		$config->target_services = explode('|@|',Context::get('target_services'));
 		$config->site_url = preg_replace('/\/+$/is','',Context::get('site_url'));
 		$config->year = Context::get('year');
@@ -105,6 +106,7 @@ class syndicationAdminController extends syndication {
 
 		if($oStatus->error->body != 0) return new Object(-1,$oStatus->message->body);
 
+		$result = new stdClass;
 		$result->site_name = $oStatus->site_name->body;
 		$result->first_update = $oStatus->first_update->body;
 		$result->last_update = $oStatus->last_update->body;
