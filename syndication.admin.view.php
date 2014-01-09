@@ -13,7 +13,7 @@ class syndicationAdminView extends syndication
 
 	public function dispSyndicationAdminConfig()
 	{
-		$oModuleModel = &getModel('module');
+		$oModuleModel = getModel('module');
 
 		$module_config = $oModuleModel->getModuleConfig('syndication');
 		if(!$module_config->target_services)

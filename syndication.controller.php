@@ -12,8 +12,8 @@ class syndicationController extends syndication
 	function triggerInsertDocument(&$obj) {
 		if($obj->module_srl < 1) return new Object();
 
-		$oSyndicationModel = &getModel('syndication');
-		$oModuleModel = &getModel('module');
+		$oSyndicationModel = getModel('syndication');
+		$oModuleModel = getModel('module');
 
 		if($oSyndicationModel->isExceptedModules($obj->module_srl)) return new Object();
 
@@ -28,8 +28,8 @@ class syndicationController extends syndication
 	function triggerUpdateDocument(&$obj) {
 		if($obj->module_srl < 1) return new Object();
 
-		$oSyndicationModel = &getModel('syndication');
-		$oModuleModel = &getModel('module');
+		$oSyndicationModel = getModel('syndication');
+		$oModuleModel = getModel('module');
 
 		if($oSyndicationModel->isExceptedModules($obj->module_srl)) return new Object();
 
@@ -44,8 +44,8 @@ class syndicationController extends syndication
 	function triggerDeleteDocument(&$obj) {
 		if($obj->module_srl < 1) return new Object();
 
-		$oSyndicationModel = &getModel('syndication');
-		$oModuleModel = &getModel('module');
+		$oSyndicationModel = getModel('syndication');
+		$oModuleModel = getModel('module');
 
 		if($oSyndicationModel->isExceptedModules($obj->module_srl)) return new Object();
 
@@ -58,8 +58,8 @@ class syndicationController extends syndication
 	}
 
 	function triggerDeleteModule(&$obj) {
-		$oSyndicationModel = &getModel('syndication');
-		$oModuleModel = &getModel('module');
+		$oSyndicationModel = getModel('syndication');
+		$oModuleModel = getModel('module');
 
 		if($oSyndicationModel->isExceptedModules($obj->module_srl)) return new Object();
 
@@ -78,8 +78,8 @@ class syndicationController extends syndication
 		$document_srl = $obj->document_srl;
 		$module_srl = $obj->module_srl;
 
-		$oSyndicationModel = &getModel('syndication');
-		$oModuleModel = &getModel('module');
+		$oSyndicationModel = getModel('syndication');
+		$oModuleModel = getModel('module');
 
 		if($oSyndicationModel->isExceptedModules($module_srl)) return new Object();
 
@@ -93,8 +93,8 @@ class syndicationController extends syndication
 		$document_srl = $obj->document_srl;
 		$module_srl = $obj->module_srl;
 
-		$oSyndicationModel = &getModel('syndication');
-		$oModuleModel = &getModel('module');
+		$oSyndicationModel = getModel('syndication');
+		$oModuleModel = getModel('module');
 
 		if($oSyndicationModel->isExceptedModules($module_srl)) return new Object();
 
@@ -115,7 +115,7 @@ class syndicationController extends syndication
 	}
 
 	function ping($id, $type) {
-		$oModuleModel = &getModel('module');
+		$oModuleModel = getModel('module');
 		$config = $oModuleModel->getModuleConfig('syndication');
 
 		if(!count($config->target_services)) return;
