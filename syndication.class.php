@@ -25,7 +25,7 @@ class syndication extends ModuleObject {
 	);
 
 	function moduleInstall() {
-		$oModuleController = &getController('module');
+		$oModuleController = getController('module');
 		$oModuleController->insertTrigger('document.insertDocument', 'syndication', 'controller', 'triggerInsertDocument', 'after');
 		$oModuleController->insertTrigger('document.updateDocument', 'syndication', 'controller', 'triggerUpdateDocument', 'after');
 		$oModuleController->insertTrigger('document.deleteDocument', 'syndication', 'controller', 'triggerDeleteDocument', 'after');
@@ -34,7 +34,7 @@ class syndication extends ModuleObject {
 		$oModuleController->insertTrigger('document.moveDocumentToTrash', 'syndication', 'controller', 'triggerMoveDocumentToTrash', 'after');
 		$oModuleController->insertTrigger('document.restoreTrash', 'syndication', 'controller', 'triggerRestoreTrash', 'after');
 
-		$oAddonAdminModel = &getAdminModel('addon');
+		$oAddonAdminModel = getAdminModel('addon');
 		if($oAddonAdminModel->getAddonInfoXml('catpcha')){
 			$oAddonAdminController = &addonAdminController::getInstance();
 			$oAddonAdminController->doActivate('catpcha');
@@ -43,7 +43,7 @@ class syndication extends ModuleObject {
 	}
 
 	function checkUpdate() {
-		$oModuleModel = &getModel('module');
+		$oModuleModel = getModel('module');
 		if(!$oModuleModel->getTrigger('document.moveDocumentToTrash', 'syndication', 'controller', 'triggerMoveDocumentToTrash', 'after')) return true;
 		if(!$oModuleModel->getTrigger('document.restoreTrash', 'syndication', 'controller', 'triggerRestoreTrash', 'after')) return true;
 
@@ -51,8 +51,8 @@ class syndication extends ModuleObject {
 	}
 
 	function moduleUpdate() {
-		$oModuleModel = &getModel('module');
-		$oModuleController = &getController('module');
+		$oModuleModel = getModel('module');
+		$oModuleController = getController('module');
 
 		if(!$oModuleModel->getTrigger('document.moveDocumentToTrash', 'syndication', 'controller', 'triggerMoveDocumentToTrash', 'after')){
 			$oModuleController->insertTrigger('document.moveDocumentToTrash', 'syndication', 'controller', 'triggerMoveDocumentToTrash', 'after');
@@ -61,7 +61,7 @@ class syndication extends ModuleObject {
 			$oModuleController->insertTrigger('document.restoreTrash', 'syndication', 'controller', 'triggerRestoreTrash', 'after');
 		}
 
-		$oAddonAdminModel = &getAdminModel('addon');
+		$oAddonAdminModel = getAdminModel('addon');
 		if($oAddonAdminModel->getAddonInfoXml('catpcha')){
 			$oAddonAdminController = &addonAdminController::getInstance();
 			$oAddonAdminController->doActivate('catpcha');

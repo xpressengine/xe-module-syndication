@@ -13,9 +13,9 @@ class syndicationAdminController extends syndication {
 	}
 
 	function procSyndicationAdminInsertService() {
-		$oModuleController = &getController('module');
-		$oSyndicationController = &getController('syndication');
-		$oSyndicationModel = &getModel('syndication');
+		$oModuleController = getController('module');
+		$oSyndicationController = getController('syndication');
+		$oSyndicationModel = getModel('syndication');
 
 		$config = new stdClass;
 		$config->target_services = explode('|@|',Context::get('target_services'));
@@ -51,7 +51,7 @@ class syndicationAdminController extends syndication {
 		$site_url = trim(Context::get('site_url'));
 		if(!$site_url) return new Object(-1,'msg_invalid_request');
 
-		$oSyndicationModel = &getModel('syndication');
+		$oSyndicationModel = getModel('syndication');
 
 		$id = $oSyndicationModel->getID('site');
 		if(substr($site_url,-1)!='/') $site_url .= '/';
@@ -82,7 +82,7 @@ class syndicationAdminController extends syndication {
 		$status_url = trim($this->statuses[$target_service]);
 		if(!$status_url) return new Object(-1,'msg_syndication_status_not_support');
 
-		$oModuleModel = &getModel('module');
+		$oModuleModel = getModel('module');
 
 		$config = $oModuleModel->getModuleConfig('syndication');
 		$site_url = preg_replace('/^(http|https):\/\//i','',$config->site_url);

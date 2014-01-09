@@ -16,7 +16,7 @@ class syndicationModel extends syndication
 	var $granted_modules = array();
 
 	function init() {
-		$oModuleModel = &getModel('module');
+		$oModuleModel = getModel('module');
 		$config = $oModuleModel->getModuleConfig('syndication');
 		$this->site_url = preg_replace('/\/+$/is','',$config->site_url);
 		$this->target_services = $config->target_services;
@@ -82,7 +82,7 @@ class syndicationModel extends syndication
 	}
 
 	function getSyndicationList() {
-		$oModuleModel = &getModel('module');
+		$oModuleModel = getModel('module');
 		$config = $oModuleModel->getModuleConfig('syndication');
 		if(!$config->year || !$config->site_url) return new Object(-1,'msg_check_syndication_config');
 
@@ -260,7 +260,7 @@ class syndicationModel extends syndication
 	function getArticle($document_srl) {
 		if($this->site_url==null) $this->init();
 
-		$oDocumentModel = &getModel('document');
+		$oDocumentModel = getModel('document');
 		$oDocument = $oDocumentModel->getDocument($document_srl,false,false);
 		if(!$oDocument->isExists()) return;
 
