@@ -8,7 +8,8 @@
  **/
 class syndicationAdminView extends syndication
 {
-	function init() {
+	function init() 
+	{
 	}
 
 	public function dispSyndicationAdminConfig()
@@ -16,33 +17,35 @@ class syndicationAdminView extends syndication
 		$oModuleModel = getModel('module');
 
 		$module_config = $oModuleModel->getModuleConfig('syndication');
-		if(!$module_config->target_services)
-		{
-			$module_config->target_services = array();
-		}
 
-		foreach($this->services as $key => $val)
+		$oSyndicationModel = getModel('syndication');
+		Context::set('ping_log', $oSyndicationModel->getResentPingLog());
+
+		if(!$module_config->syndication_use)
 		{
-			unset($obj);
-			$obj = new stdClass;
-			$obj->service = $key;
-			$obj->ping = $val;
-			$obj->selected = in_array($key, $module_config->target_services)?true:false;
-			$services[] = $obj;
+			$module_config->syndication_use = 'Y';
 		}
-		Context::set('services', $services);
 
 		if(!$module_config->site_url)
 		{
 			$module_config->site_url = Context::getDefaultUrl()?Context::getDefaultUrl():getFullUrl();
 		}
-		Context::set('site_url', preg_replace('/^(http|https):\/\//i','',$module_config->site_url));
 
 		if(!$module_config->year)
 		{
 			$module_config->year = date("Y");
 		}
+
+		if(!isset($module_config->syndication_password))
+		{
+			$module_config->syndication_password = uniqid();
+		}
+
+		Context::set('syndication_use', $module_config->syndication_use);
+		Context::set('site_url', preg_replace('/^(http|https):\/\//i','',$module_config->site_url));
 		Context::set('year', $module_config->year);
+		Context::set('syndication_token', $module_config->syndication_token);
+		Context::set('syndication_password', $module_config->syndication_password);
 
 		$output = executeQueryArray('syndication.getExceptModules');
 		$except_module_list = array();
@@ -54,6 +57,7 @@ class syndicationAdminView extends syndication
 			}
 		}
 		Context::set('except_module', $except_module_list);
+		
 
 		//Security
 		$security = new Security();

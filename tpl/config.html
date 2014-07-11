@@ -10,30 +10,53 @@
 </div>
 <form ruleset="insertService" class="x_form-horizontal" action="./" method="post">
 	<input type="hidden" name="xe_validator_id" value="{$form_id}" />
-	<input type="hidden" name="act" value="procSyndicationAdminInsertService" />
+	<input type="hidden" name="act" value="procSyndicationAdminInsertConfig" />
     <input type="hidden" name="year" value="{$year}" />
+
+	<div class="x_control-group">
+        <div class="x_control-label">{$lang->help}</div>
+        <div class="x_controls">
+            <p>{$lang->about_syndication}</p>
+			<p><a href="http://webmastertool.naver.com/syndi/status.naver" target="_blank">http://webmastertool.naver.com/syndi/status.naver</a></p>
+        </div>
+	</div>
+
+
+	<div class="x_control-group">
+        <div class="x_control-label">{$lang->use}</div>
+        <div class="x_controls">
+			<select name="syndication_use">
+				<option value="Y" selected="selected"|cond="$syndication_use=='Y'">{$lang->use}</option>
+				<option value="N" selected="selected"|cond="$syndication_use=='N'">{$lang->notuse}</option>
+			</select>
+        </div>
+	</div>
+
 	<div class="x_control-group">
         <div class="x_control-label">{$lang->my_syndication_url}</div>
         <div class="x_controls">
             http://<input type="text" id="site_url" name="site_url" value="{$site_url}" />
-            <input type="button" value="{$lang->cmd_check_syndication_echo}" onclick="pingSite(jQuery('#site_url').val())" class="x_btn" />
+            <input type="button" value="{$lang->cmd_check_syndication_echo}" onclick="pingCheck(jQuery('#site_url').val())" class="x_btn" />
             <p class="x_help-inline">{$lang->about_my_syndication_url}</p>
 			<p class="ping_test_result"></p>
         </div>
 	</div>
+
 	<div class="x_control-group">
-        <div class="x_control-label">{$lang->syndication_service}</div>
+        <div class="x_control-label">{$lang->naver_syndication_token}</div>
         <div class="x_controls">
-			<div class="x_inline" loop="$services => $key,$val">
-				<label class="x_inline">
-					<input type="checkbox" name="target_services" value="{$val->service}" id="target_service_{$val->service}" <!--@if($val->selected)-->checked="checked"<!--@end--> /> {$val->service}
-				</label>
-				<input cond="$val->selected" type="button" value="{$lang->cmd_check_syndication_status}" onclick="checkSyndicationStatus('{$val->service}')" class="x_btn" />
-			</div>
-			<div class="print_result_status"></div>
-            <p>{$lang->about_syndication}</p>
+			<input type="text" name="syndication_token" value="{$syndication_token}" id="syndication_token" style="width:90%"/>
         </div>
 	</div>
+
+	<div class="x_control-group">
+        <div class="x_control-label">{$lang->my_syndication_password}</div>
+        <div class="x_controls">
+            <input type="text" id="syndication_password" name="syndication_password" value="{$syndication_password}" />
+            <p class="x_help-inline">{$lang->about_my_syndication_password}</p>
+        </div>
+	</div>
+
 	<div class="x_control-group">
         <div class="x_control-label">{$lang->except_module}</div>
         <div class="x_controls">
@@ -56,3 +79,12 @@
 		<button type="submit" class="x_btn x_btn-primary x_pull-right">{$lang->cmd_save}</button>
 	</div>
 </form>
+
+<div>
+	<h2>Ping Fail log</h2>
+	<ul>
+		<li loop="$ping_log=>$obj">
+			<span>{zdate($obj->regdate)}</span> / <span>{urldecode($obj->message)}</span>
+		</li>
+	</ul>
+</div>
