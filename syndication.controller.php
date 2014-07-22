@@ -104,9 +104,15 @@ class syndicationController extends syndication
 
 		if($config->syndication_use!='Y') return new Object();
 
-		$target_id = sprintf('%s', $obj->module_srl);
-		$id = $oSyndicationModel->getID('channel', $target_id);
-		$this->ping($id, 'article');
+		$arr_document_srl = explode(',', $obj->document_srls);
+		if(!$arr_document_srl) return new Object();
+
+		foreach($arr_document_srl as $document_srl)
+		{
+			$target_id = sprintf('%s-%s', $obj->module_srl, $document_srl);
+			$id = $oSyndicationModel->getID('article', $target_id);
+			$this->ping($id, 'article');
+		}
 
 		return new Object();
 	}
@@ -171,12 +177,23 @@ class syndicationController extends syndication
 	function ping($id, $type, $page=1) {
 		$this->ping_message = '';
 
+		$oSyndicationModel = getModel('syndication');
+
 		$oModuleModel = getModel('module');
 		$config = $oModuleModel->getModuleConfig('syndication');
 
 		if(!$config->syndication_token)
 		{
 			$this->ping_message = 'Syndication Token empty';
+			$oSyndicationModel->setResentPingLog($this->ping_message);
+			return false;
+		}
+
+		if(!$this->checkOpenSSLSupport())
+		{
+			$lang = Context::get('lang');
+			$this->ping_message = $lang->msg_need_openssl_support;
+			$oSyndicationModel->setResentPingLog($this->ping_message);
 			return false;
 		}
 
@@ -213,7 +230,6 @@ class syndicationController extends syndication
 				$this->ping_message = $xmlDoc->result->message->body;
 			}
 
-			$oSyndicationModel = getModel('syndication');
 			$oSyndicationModel->setResentPingLog($this->ping_message);
 			return false;
 		}

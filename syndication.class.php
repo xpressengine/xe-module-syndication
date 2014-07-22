@@ -78,4 +78,12 @@ class syndication extends ModuleObject {
 
 	function recompileCache() {
 	}
+
+	function checkOpenSSLSupport()
+	{
+		if(!in_array('ssl', stream_get_transports())) {
+			return FALSE;
+		}
+		return TRUE;
+	}
 }

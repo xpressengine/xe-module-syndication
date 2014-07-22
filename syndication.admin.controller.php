@@ -44,6 +44,11 @@ class syndicationAdminController extends syndication {
 			}
 		}
 
+		if(!$this->checkOpenSSLSupport())
+		{
+			return new Object(-1, 'msg_need_openssl_support');
+		}
+
 		$this->setMessage('success_applied');
 		if(!in_array(Context::getRequestMethod(),array('XMLRPC','JSON'))) {
 			$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispSyndicationAdminConfig');
