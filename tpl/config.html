@@ -17,10 +17,9 @@
         <div class="x_control-label">{$lang->help}</div>
         <div class="x_controls">
             <p>{$lang->about_syndication}</p>
-			<p><a href="http://webmastertool.naver.com/syndi/status.naver" target="_blank">http://webmastertool.naver.com/syndi/status.naver</a></p>
+            <p><a href="http://webmastertool.naver.com/guide/syndi_guide.naver" target="_blank">http://webmastertool.naver.com/guide/syndi_guide.naver</a></p>
         </div>
 	</div>
-
 
 	<div class="x_control-group">
         <div class="x_control-label">{$lang->use}</div>
@@ -35,7 +34,7 @@
 	<div class="x_control-group">
         <div class="x_control-label">{$lang->my_syndication_url}</div>
         <div class="x_controls">
-            http://<input type="text" id="site_url" name="site_url" value="{$site_url}" />
+            {$uri_scheme}<input type="text" id="site_url" name="site_url" value="{$site_url}" />
             <input type="button" value="{$lang->cmd_check_syndication_echo}" onclick="pingCheck(jQuery('#site_url').val())" class="x_btn" />
             <p class="x_help-inline">{$lang->about_my_syndication_url}</p>
 			<p class="ping_test_result"></p>
