@@ -104,7 +104,7 @@ class syndicationModel extends syndication
 		$config = $oModuleModel->getModuleConfig('syndication');
 		if(!$config->year || !$config->site_url || !$config->syndication_token) 
 		{
-			return new Object(-1,'msg_check_syndication_config');
+			return $this->makeObject(-1,'msg_check_syndication_config');
 		}
 
 		$id = Context::get('id');
@@ -121,17 +121,17 @@ class syndicationModel extends syndication
 		$vars = Context::getRequestVars();
 		if(!$id || !$type)
 		{
-			return new Object(-1,'msg_invalid_request');
+			return $this->makeObject(-1,'msg_invalid_request');
 		}
 
 		if(!preg_match('/^tag:([^,]+),([0-9]+):(site|channel|article)(.*)$/i',$id,$matches)) 
 		{
-			return new Object(-1,'msg_invalid_request');
+			return $this->makeObject(-1,'msg_invalid_request');
 		}
 
 		if($config->syndication_password != Context::get('syndication_password'))
 		{
-			return new Object(-1,'msg_invalid_request');
+			return $this->makeObject(-1,'msg_invalid_request');
 		}
 
 		$url = $matches[1];
@@ -156,7 +156,7 @@ class syndicationModel extends syndication
 
 		if(!$url || !$year || !$target)
 		{
-			return new Object(-1,'msg_invalid_request');
+			return $this->makeObject(-1,'msg_invalid_request');
 		}
 
 		$time_zone = substr($GLOBALS['_time_zone'], 0, 3).':'.substr($GLOBALS['_time_zone'], 3);
